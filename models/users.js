@@ -18,7 +18,7 @@ class User {
     try {
       const response = await db.one(
         `INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id;`,
-        [this.firstname, this.last_name, this.email, this.password]
+        [this.first_name, this.last_name, this.email, this.password]
       );
       return response;
     } catch (error) {
