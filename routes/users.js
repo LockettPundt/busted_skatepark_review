@@ -1,5 +1,5 @@
 const express = require('express'),
-  bcrpt = require('bcryptjs'),
+  bcrypt = require('bcryptjs'),
   UserModel = require('../models/users'),
   router = express.Router();
 
@@ -11,7 +11,7 @@ router.get('/signup', function(req, res, next) {
     partials: {
       partial: 'partial-signup'
     }
-  });
+  })
 });
 
 router.get('/login', function(req, res, next) {
@@ -22,16 +22,17 @@ router.get('/login', function(req, res, next) {
     partials: {
       partial: 'partial-login'
     }
-  });
+  })
 });
 
 router.post('/login', async function(req, res, next) {
+  console.log('hi');
   const { email, password } = req.body;
-
+  console.log("this is the req", req.body);
   const user = new UserModel(null, null, null, email, password);
   const loginResponse = await user.loginUser();
   if (loginResponse === true) {
-    res.sendStatus(200);
+    res.sendStatus(200).redirect('/');
   } else {
     res.sendStatus(403);
   }
@@ -44,8 +45,9 @@ router.post('/signup', function(req, res, next) {
   const hash = bcrypt.hashSync(password, salt);
 
   const user = new UserModel(null, first_name, last_name, email, hash);
-  use.addUser();
-  res.sendStatus(200);
+  console.log('adding user', user);
+  user.addUser();
+  res.sendStatus(200).redirect('/');
 });
 
 module.exports = router;
